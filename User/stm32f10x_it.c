@@ -25,7 +25,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-#include "./oled/OLED.h"
+#include "./oled/OLED_drive.h"
 #include <string.h>
 
 /** @addtogroup STM32F10x_StdPeriph_Template

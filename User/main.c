@@ -1,5 +1,6 @@
 #include "stm32f10x.h"
-#include "./oled/OLED.h"
+#include "./oled/OLED_drive.h"
+#include "./font/fonts.h"
 
 int main(void)
 {		
@@ -8,11 +9,12 @@ int main(void)
 	OLED_Init();
 	OLED_CLS();
 	
-	OLED_ShowStr(0, 0, "Test OK Mother Fucker !!!");
+	OLED_DispChar_UI( 0, 0, &Cover_Arrow);
 	
 	while ( 1 );
+	//	antiColor(0, 0, 127, 63);
 }
 
 
-/* ------------------------------------------end of file---------------------------------------- */
+
 

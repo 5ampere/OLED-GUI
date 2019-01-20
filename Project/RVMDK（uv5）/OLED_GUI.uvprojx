@@ -134,7 +134,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4100</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
@@ -552,11 +552,6 @@
               <FilePath>..\..\User\stm32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>oled.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\oled\oled.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\i2c\bsp_i2c.c</FilePath>
@@ -565,6 +560,21 @@
               <FileName>fonts.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\font\fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled_drive.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\oled\oled_drive.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled_input.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\oled\oled_input.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled_interface.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\oled\oled_interface.c</FilePath>
             </File>
           </Files>
         </Group>
