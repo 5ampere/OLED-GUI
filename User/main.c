@@ -9,14 +9,12 @@ int main(void)
 	//OLED 初始化
 	I2C_Configuration();
 	OLED_Init();
-	OLED_CLS();
 	menuInit();
 	Key_GPIO_Config();
 	
 	enterMainMenu();
 	
-	OLED_DispChar_UI( 0, 0, &Cover_Arrow);	// 画主界面
-
+antiColor(0, 0, 127, 63);
 	while ( 1 );
 }
 

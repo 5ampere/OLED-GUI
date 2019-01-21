@@ -6,7 +6,7 @@
 // 检测是否按下"上"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_UP(void)
 {
-	if( Key_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_ON  )
+	if( Key_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_ON )
 		return 1;
 	else
 		return 0;
@@ -15,7 +15,7 @@ inline uint8_t ifPress_UP(void)
 // 检测是否按下"下"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_DOWN(void)
 {
-	if( Key_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == KEY_ON  )
+	if( Key_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == KEY_ON )
 		return 1;
 	else
 		return 0;
@@ -24,14 +24,19 @@ inline uint8_t ifPress_DOWN(void)
 // 检测是否按下"确认"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_YES(void)
 {
-	
+	if( Key_Scan(KEY3_GPIO_PORT,KEY3_GPIO_PIN) == KEY_ON )
+		return 1;
+	else
 		return 0;
 }
 
 // 检测是否按下"取消"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_NO(void)
 {
-	return 0;
+	if( Key_Scan(KEY4_GPIO_PORT,KEY4_GPIO_PIN) == KEY_ON )
+		return 1;
+	else
+		return 0;
 }
 
 /************************ 用户自定义以上函数 ************************/

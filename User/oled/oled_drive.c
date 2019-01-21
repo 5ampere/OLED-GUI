@@ -93,31 +93,9 @@ void OLED_Init(void)
 void OLED_SetPos(unsigned char x, unsigned char y)
 {
     WriteCmd(0xb0+(y & 0x0f));
-    WriteCmd((x & 0xf0)>>4 | 0x10);
+    WriteCmd((x & 0xf0)>>4);
     WriteCmd((x & 0x0f));
 
-}
-
-//全屏填充
-void OLED_Fill(unsigned char fill_Data)
-{
-    unsigned char m,n;
-    for(m=0; m<8; m++)
-    {
-        WriteCmd(0xb0+m);		//page0-page1
-        WriteCmd(0x00);		//low column start address
-        WriteCmd(0x10);		//high column start address
-        for(n=0; n<128; n++)
-        {
-            WriteDat(fill_Data);
-        }
-    }
-}
-
-//清屏
-void OLED_CLS(void)
-{
-    OLED_Fill(0x00);
 }
 
 //将OLED从休眠中唤醒
@@ -259,7 +237,7 @@ void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 //将指定区域清空 x1,y1 x2,y2 为矩形对角两个端点的坐标
 void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 {
-	uint8_t i, j, k;
+	uint8_t i, j;
 	
 	videoMem.refreshXL = X1 > X2 ? X2 : X1;
 	videoMem.refreshXR = X1 < X2 ? X2 : X1;
@@ -271,6 +249,26 @@ void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
 		{	
 			OLED_Set_Point(i, j, 0);
+		}
+	}
+	refreshArea();
+}
+
+//将指定区域填充 x1,y1 x2,y2 为矩形对角两个端点的坐标
+void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
+{
+	uint8_t i, j;
+	
+	videoMem.refreshXL = X1 > X2 ? X2 : X1;
+	videoMem.refreshXR = X1 < X2 ? X2 : X1;
+	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
+	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
+		
+	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
+	{
+		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
+		{	
+			OLED_Set_Point(i, j, 1);
 		}
 	}
 	refreshArea();

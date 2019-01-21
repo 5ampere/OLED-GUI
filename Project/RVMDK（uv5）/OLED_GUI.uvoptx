@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>ㄋ9	?hwㄋ9	</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -152,9 +151,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>71</LineNumber>
+          <LineNumber>76</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134220974</Address>
+          <Address>134221014</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -163,14 +162,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\71</Expression>
+          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\76</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>198</LineNumber>
+          <LineNumber>221</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134221790</Address>
+          <Address>134220566</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -179,71 +178,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\198</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>173</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134221594</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\173</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>176</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134221614</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\176</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>218</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134220564</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\218</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>217</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134220556</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>E:\WorkSpace\STM32\OLED-GUI\Project\User\oled\oled_interface.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\217</Expression>
+          <Expression>\\OLED_GUI\../../User/oled/oled_interface.c\221</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

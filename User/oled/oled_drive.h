@@ -44,13 +44,12 @@ void WriteCmd(unsigned char I2C_Command);
 void WriteDat(unsigned char I2C_Data);
 void OLED_Init(void);
 void OLED_SetPos(unsigned char x, unsigned char y);
-void OLED_Fill(unsigned char fill_Data);//»´∆¡µ„¡¡(0XFF)   »´∆¡√(0x00)
-void OLED_CLS(void);//«Â∆¡
 void OLED_ON(void);//≤‚ ‘OLED–›√ﬂ∫ÛªΩ–—
 void OLED_OFF(void);//≤‚ ‘OLED–›√ﬂ
 void refreshArea(void);
 void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2);
 void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2);
+void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2);
 void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar );
 void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr);
 void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial );
