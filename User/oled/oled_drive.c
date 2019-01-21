@@ -92,9 +92,10 @@ void OLED_Init(void)
 //设置起始点坐标
 void OLED_SetPos(unsigned char x, unsigned char y)
 {
-    WriteCmd(0xb0+y);
-    WriteCmd(((x&0xf0)>>4)|0x10);
-    WriteCmd((x&0x0f)|0x01);
+    WriteCmd(0xb0+(y & 0x0f));
+    WriteCmd((x & 0xf0)>>4 | 0x10);
+    WriteCmd((x & 0x0f));
+
 }
 
 //全屏填充
@@ -187,7 +188,7 @@ void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar )
 }
 
 //在显存数组内设置一个点的状态
-static void OLED_Set_Point( uint16_t usX, uint16_t usY, uint8_t Color )
+static void OLED_Set_Point( uint8_t usX, uint8_t usY, uint8_t Color )
 {
 	uint8_t page_Y = usY / 8;
 	
@@ -236,21 +237,18 @@ void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial )
 //将指定区域反色 x1,y1 x2,y2 为矩形对角两个端点的坐标
 void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 {
-	uint8_t i, j, k, heigh, width, Material_Y;
+	uint8_t i, j, k;
 	
 	videoMem.refreshXL = X1 > X2 ? X2 : X1;
 	videoMem.refreshXR = X1 < X2 ? X2 : X1;
 	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
 	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
-	width = videoMem.refreshXR - videoMem.refreshXL;
-	heigh = videoMem.refreshYL - videoMem.refreshYH;
-	Material_Y = heigh / 8 + (heigh % 8 != 0); // 每列的字节数
 		
-	for ( i = videoMem.refreshXL; i < videoMem.refreshXR; i++ )
+	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
 	{
-		for ( j = videoMem.refreshYH; j < videoMem.refreshYL; j++ )
+		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
 		{
-			k = *(&videoMem.pVideoMem[videoMem.refreshXL][videoMem.refreshYH/8] + (i-videoMem.refreshXL) * Material_Y + (j/8)) >> (7 - (j % 8));
+			k = (videoMem.pVideoMem[i][j/8]) >> (7 - (j % 8));
 			k &= 0x01;		
 			OLED_Set_Point(i, j, (k == 0));
 		}
@@ -258,22 +256,19 @@ void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 	refreshArea();
 }
 
-//将指定清空 x1,y1 x2,y2 为矩形对角两个端点的坐标
+//将指定区域清空 x1,y1 x2,y2 为矩形对角两个端点的坐标
 void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 {
-	uint8_t i, j, k, heigh, width, Material_Y;
+	uint8_t i, j, k;
 	
 	videoMem.refreshXL = X1 > X2 ? X2 : X1;
 	videoMem.refreshXR = X1 < X2 ? X2 : X1;
 	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
 	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
-	width = videoMem.refreshXR - videoMem.refreshXL;
-	heigh = videoMem.refreshYL - videoMem.refreshYH;
-	Material_Y = heigh / 8 + (heigh % 8 != 0); // 每列的字节数
 		
-	for ( i = videoMem.refreshXL; i < videoMem.refreshXR; i++ )
+	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
 	{
-		for ( j = videoMem.refreshYH; j < videoMem.refreshYL; j++ )
+		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
 		{	
 			OLED_Set_Point(i, j, 0);
 		}
@@ -288,10 +283,29 @@ void refreshArea(void)
 	page_L = (videoMem.refreshYL / 8 + (videoMem.refreshYL%8 != 0));
 	page_H = videoMem.refreshYH / 8;
 	
-	for ( i = page_H; i <= page_L; i++ )
+//	for ( i = page_H; i <= page_L; i++ )
+//	{
+//		OLED_SetPos(videoMem.refreshXL, i);
+//		for ( j = videoMem.refreshXL; j <= videoMem.refreshXR; j++ )
+//		{
+//			dataBack = 0;
+//			data = videoMem.pVideoMem[j][i];	// 将显存数据反序输出
+//			dataBack |= ((data & 0x80) >> 7);
+//			dataBack |= ((data & 0x40) >> 5);
+//			dataBack |= ((data & 0x20) >> 3);
+//			dataBack |= ((data & 0x10) >> 1);
+//			dataBack |= ((data & 0x08) << 1);
+//			dataBack |= ((data & 0x04) << 3);
+//			dataBack |= ((data & 0x02) << 5);
+//			dataBack |= ((data & 0x01) << 7);
+//			WriteDat(dataBack);
+//		}
+//	}
+
+	for ( i = 0; i <= 7; i++ )
 	{
 		OLED_SetPos(videoMem.refreshXL, i);
-		for ( j = videoMem.refreshXL; j <= videoMem.refreshXR; j++ )
+		for ( j = 0; j <= 127; j++ )
 		{
 			dataBack = 0;
 			data = videoMem.pVideoMem[j][i];	// 将显存数据反序输出

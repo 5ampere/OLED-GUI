@@ -1,29 +1,37 @@
 #include "./oled/OLED_input.h"
+#include "./key/bsp_key.h"
 
 /************************ 用户自定义以下函数 ************************/
 
 // 检测是否按下"上"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_UP(void)
 {
-	
+	if( Key_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_ON  )
+		return 1;
+	else
+		return 0;
 }
 
 // 检测是否按下"下"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_DOWN(void)
 {
-	
+	if( Key_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == KEY_ON  )
+		return 1;
+	else
+		return 0;
 }
 
 // 检测是否按下"确认"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_YES(void)
 {
 	
+		return 0;
 }
 
 // 检测是否按下"取消"键, 按下则返回1，否则返回0
 inline uint8_t ifPress_NO(void)
 {
-	
+	return 0;
 }
 
 /************************ 用户自定义以上函数 ************************/

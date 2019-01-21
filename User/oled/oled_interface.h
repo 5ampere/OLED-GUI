@@ -4,7 +4,7 @@
 #include <stm32f10x.h>
 
 #define null			0
-#define sizeOfMenu		10
+
 
 // 代表某一级目录的结构体，通过组成数组构成一系列的目录
 typedef struct typedef_Menu
