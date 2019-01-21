@@ -93,8 +93,8 @@ void OLED_Init(void)
 void OLED_SetPos(unsigned char x, unsigned char y)
 {
     WriteCmd(0xb0+(y & 0x0f));
-    WriteCmd((x & 0xf0)>>4);
-    WriteCmd((x & 0x0f));
+    WriteCmd((x & 0xf0)>>4 | 0x10);
+    WriteCmd((x & 0x0f) | 0x00);
 
 }
 
@@ -117,7 +117,7 @@ void OLED_OFF(void)
 //将字符串写入显存并显示
 void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr)
 {
-	if ( x >= OLED_WIDTH || y >= OLED_HEIGHT )				// 位置参数不合理
+	if ( x > OLED_WIDTH || y > OLED_HEIGHT )				// 位置参数不合理
 		return;
 	videoMem.refreshXL = x;
 	videoMem.refreshYH = y;
@@ -125,15 +125,13 @@ void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr)
     {
         if ( * pStr <= 126 && * pStr >= 32 )	           	// 英文字符
         {
-            if ( x+WIDTH_EN_CHAR > 128 )					// 超过边界则不显示
-				break;
             OLED_DispChar_EN(x, y, *pStr);
             x += WIDTH_EN_CHAR;			
         }
 		pStr += 1;
     }
 	videoMem.refreshXR = x;
-	videoMem.refreshYL = y + HEIGHT_EN_CHAR;
+	videoMem.refreshYL = y + HEIGHT_EN_CHAR - 1;
 	refreshArea();
 }
 
@@ -144,7 +142,7 @@ void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar )
     uint8_t *Pfont;
     uint8_t i, j, k;
    
-	if ( usX >= OLED_WIDTH || usY >= OLED_HEIGHT )					// 位置参数不合理
+	if ( usX+WIDTH_EN_CHAR > OLED_WIDTH || usY+HEIGHT_EN_CHAR > OLED_HEIGHT )					// 位置参数不合理
 		return;
 	
 	//计算字模位置
@@ -154,14 +152,25 @@ void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar )
     //向显存数组填充数据
 	j = usY / 8;
 	k = usY % 8;
-	for ( i = 0; i < WIDTH_EN_CHAR; i++ )
+	if ( k == 0 )
 	{
-		videoMem.pVideoMem[usX+i][j]   &= 0xff << (8 - k);			// 先清空要写入的位
-		videoMem.pVideoMem[usX+i][j+1] &= 0x00;
-		videoMem.pVideoMem[usX+i][j+2] &= 0xff >> k;
-		videoMem.pVideoMem[usX+i][j]   |= (*(Pfont + 2*i) >> k);		// 进行写入
-		videoMem.pVideoMem[usX+i][j+1] |= (*(Pfont+2*i)<<(8-k)) | (*(Pfont+2*i+1) >> k);	
-		videoMem.pVideoMem[usX+i][j+2] |= (*(Pfont + 2*i + 1) << (8-k));	
+		for ( i = 0; i < WIDTH_EN_CHAR; i++ )
+		{
+			videoMem.pVideoMem[usX+i][j]   = *(Pfont + 2*i);		// 进行写入	
+			videoMem.pVideoMem[usX+i][j+1] = *(Pfont + 2*i + 1);
+		}			
+	}
+	else
+	{
+		for ( i = 0; i < WIDTH_EN_CHAR; i++ )
+		{
+			videoMem.pVideoMem[usX+i][j]   &= 0xff << (8 - k);			// 先清空要写入的位
+			videoMem.pVideoMem[usX+i][j+1] &= 0x00;
+			videoMem.pVideoMem[usX+i][j+2] &= 0xff >> k;
+			videoMem.pVideoMem[usX+i][j]   |= (*(Pfont + 2*i) >> k);		// 进行写入
+			videoMem.pVideoMem[usX+i][j+1] |= (*(Pfont+2*i)<<(8-k)) | (*(Pfont+2*i+1) >> k);		
+			videoMem.pVideoMem[usX+i][j+2] |= (*(Pfont + 2*i + 1) << (8-k));	
+		}
 	}
 }
 
@@ -278,7 +287,7 @@ void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
 void refreshArea(void)
 {
 	uint8_t page_L, page_H, i, j, dataBack, data;
-	page_L = (videoMem.refreshYL / 8 + (videoMem.refreshYL%8 != 0));
+	page_L = videoMem.refreshYL / 8;
 	page_H = videoMem.refreshYH / 8;
 	
 //	for ( i = page_H; i <= page_L; i++ )
@@ -299,7 +308,7 @@ void refreshArea(void)
 //			WriteDat(dataBack);
 //		}
 //	}
-
+	
 	for ( i = 0; i <= 7; i++ )
 	{
 		OLED_SetPos(videoMem.refreshXL, i);

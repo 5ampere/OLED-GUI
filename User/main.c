@@ -14,7 +14,7 @@ int main(void)
 	
 	enterMainMenu();
 	
-antiColor(0, 0, 127, 63);
+	antiColor(0, 0, 127, 63);
 	while ( 1 );
 }
 
