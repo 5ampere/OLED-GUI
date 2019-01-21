@@ -1,4 +1,5 @@
 #include "stm32f10x.h"
+#include "./i2c/bsp_i2c.h"
 #include "./oled/OLED_interface.h"
 #include "./oled/OLED_drive.h"
 #include "./font/fonts.h"
@@ -13,11 +14,13 @@ int main(void)
 	Key_GPIO_Config();
 	
 	enterMainMenu();
+	OLED_AntiColor(0, 0, 127, 63, 1);
 	
-	antiColor(0, 0, 127, 63);
-	while ( 1 );
+	while ( 1 )
+	{
+	}
 }
-
+  
 
 
 

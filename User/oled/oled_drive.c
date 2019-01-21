@@ -10,48 +10,49 @@ videoMemory videoMem = {	//显存结构体
 	0
 };
 
-//Ms延时
-static void DelayMs(unsigned int nms)
-{
-    unsigned char a,b;
-    for(; nms>0; nms--)
-        for(b=109; b>0; b--)
-            for(a=26; a>0; a--);
-}
-
-//I2C总线初始化
-void I2C_Configuration(void)
-{
-    i2c_CfgGpio();
-}
-
-//I2C写一个字节
-void I2C_WriteByte(uint8_t addr,uint8_t data)
-{
-    i2c_Start();
-
-    i2c_SendByte(OLED_ADDRESS | EEPROM_I2C_WR);
-    i2c_WaitAck();
-
-    i2c_SendByte(addr);
-    i2c_WaitAck();
-
-    i2c_SendByte(data);
-    i2c_WaitAck();
-
-    i2c_Stop();
-}
-
 //写命令
 void WriteCmd(unsigned char I2C_Command)
 {
+	
+/*************************用户自行实现函数体*************************/
+	
     I2C_WriteByte(0x00, I2C_Command);
+	
+/*************************用户自行实现函数体*************************/
+	
 }
 
 //写数据
 void WriteDat(unsigned char I2C_Data)
 {
+	
+/*************************用户自行实现函数体*************************/
+	
     I2C_WriteByte(0x40, I2C_Data);
+	
+/*************************用户自行实现函数体*************************/
+	
+}
+
+// 1ms延时
+static inline void Delay_1MS(void)
+{
+
+/*************************用户自行实现函数体*************************/
+	
+	unsigned char a,b;
+	for(b=109; b>0; b--)
+            for(a=26; a>0; a--);
+	
+/*************************用户自行实现函数体*************************/
+	
+}
+
+//Ms延时
+static void DelayMs(unsigned int nms)
+{   
+    for(; nms>0; nms--)
+		Delay_1MS() ;
 }
 
 //OLED初始化
@@ -115,12 +116,16 @@ void OLED_OFF(void)
 }
 
 //将字符串写入显存并显示
-void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr)
+void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr, uint8_t ifReflash)
 {
+	uint8_t X_L, X_R, Y_H, Y_L;
+	
 	if ( x > OLED_WIDTH || y > OLED_HEIGHT )				// 位置参数不合理
 		return;
-	videoMem.refreshXL = x;
-	videoMem.refreshYH = y;
+	
+	X_L = x;
+	Y_H = y;
+	
     while ( * pStr != '\0' )
     {
         if ( * pStr <= 126 && * pStr >= 32 )	           	// 英文字符
@@ -130,9 +135,12 @@ void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr)
         }
 		pStr += 1;
     }
-	videoMem.refreshXR = x;
-	videoMem.refreshYL = y + HEIGHT_EN_CHAR - 1;
-	refreshArea();
+	
+	X_R = x;
+	Y_L = y + HEIGHT_EN_CHAR - 1;
+	refreshRange(X_L, X_R, Y_H, Y_L);	// 更新范围信息
+	if ( ifReflash == 1 )
+		refreshArea();
 }
 
 //将一个英文字符写入显存并显示
@@ -179,7 +187,7 @@ static void OLED_Set_Point( uint8_t usX, uint8_t usY, uint8_t Color )
 {
 	uint8_t page_Y = usY / 8;
 	
-	if ( usX>127 || usX<0 || usY > 63 || usY < 0 )
+	if ( usX>127 || usY > 63)
 		return;
 	
 	if ( Color ) // 1为白色
@@ -193,8 +201,9 @@ static void OLED_Set_Point( uint8_t usX, uint8_t usY, uint8_t Color )
 }
 
 //将一个自定义图标写入显存
-void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial )
+void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial, uint8_t ifReflash)
 {
+	uint8_t X_L, X_R, Y_H, Y_L;
 	uint8_t i, j, k;
 	uint8_t Material_Y;
 	
@@ -214,75 +223,98 @@ void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial )
 	}
 	
 	//设置刷新区域并进行刷新
-	videoMem.refreshXL = usX;
-	videoMem.refreshXR = usX + pMaterial->Width - 1;
-	videoMem.refreshYH = usY ;
-	videoMem.refreshYL = usY + pMaterial->Height - 1;
-	refreshArea();
+	X_L = usX;
+	X_R = usX + pMaterial->Width - 1;
+	Y_H = usY ;
+	Y_L = usY + pMaterial->Height - 1;
+	refreshRange(X_L, X_R, Y_H, Y_L);	// 更新范围信息
+	if ( ifReflash == 1 )
+		refreshArea();
 }
 
 //将指定区域反色 x1,y1 x2,y2 为矩形对角两个端点的坐标
-void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
+void OLED_AntiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash)
 {
+	uint8_t X_L, X_R, Y_H, Y_L;
 	uint8_t i, j, k;
 	
-	videoMem.refreshXL = X1 > X2 ? X2 : X1;
-	videoMem.refreshXR = X1 < X2 ? X2 : X1;
-	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
-	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
+	X_L = X1 > X2 ? X2 : X1;
+	X_R = X1 < X2 ? X2 : X1;
+	Y_H = Y1 > Y2 ? Y2 : Y1;
+	Y_L = Y1 < Y2 ? Y2 : Y1;
 		
-	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
+	for ( i = X_L; i <= X_R; i++ )
 	{
-		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
+		for ( j = Y_H; j <= Y_L; j++ )
 		{
 			k = (videoMem.pVideoMem[i][j/8]) >> (7 - (j % 8));
 			k &= 0x01;		
 			OLED_Set_Point(i, j, (k == 0));
 		}
 	}
-	refreshArea();
+	
+	refreshRange(X_L, X_R, Y_H, Y_L);	// 更新范围信息
+	if ( ifReflash == 1 )
+		refreshArea();
 }
 
 //将指定区域清空 x1,y1 x2,y2 为矩形对角两个端点的坐标
-void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
+void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash)
 {
+	uint8_t X_L, X_R, Y_H, Y_L;
 	uint8_t i, j;
 	
-	videoMem.refreshXL = X1 > X2 ? X2 : X1;
-	videoMem.refreshXR = X1 < X2 ? X2 : X1;
-	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
-	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
+	X_L = X1 > X2 ? X2 : X1;
+	X_R = X1 < X2 ? X2 : X1;
+	Y_H = Y1 > Y2 ? Y2 : Y1;
+	Y_L = Y1 < Y2 ? Y2 : Y1;
 		
-	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
+	for ( i = X_L; i <= X_R; i++ )
 	{
-		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
+		for ( j = Y_H; j <= Y_L; j++ )
 		{	
 			OLED_Set_Point(i, j, 0);
 		}
 	}
-	refreshArea();
+	
+	refreshRange(X_L, X_R, Y_H, Y_L);	// 更新范围信息
+	if ( ifReflash == 1 )
+		refreshArea();
 }
 
 //将指定区域填充 x1,y1 x2,y2 为矩形对角两个端点的坐标
-void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2)
+void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash)
 {
+	uint8_t X_L, X_R, Y_H, Y_L;
 	uint8_t i, j;
 	
-	videoMem.refreshXL = X1 > X2 ? X2 : X1;
-	videoMem.refreshXR = X1 < X2 ? X2 : X1;
-	videoMem.refreshYH = Y1 > Y2 ? Y2 : Y1;
-	videoMem.refreshYL = Y1 < Y2 ? Y2 : Y1;
+	X_L = X1 > X2 ? X2 : X1;
+	X_R = X1 < X2 ? X2 : X1;
+	Y_H = Y1 > Y2 ? Y2 : Y1;
+	Y_L = Y1 < Y2 ? Y2 : Y1;
 		
-	for ( i = videoMem.refreshXL; i <= videoMem.refreshXR; i++ )
+	for ( i = X_L; i <= X_R; i++ )
 	{
-		for ( j = videoMem.refreshYH; j <= videoMem.refreshYL; j++ )
+		for ( j = Y_H; j <= Y_L; j++ )
 		{	
 			OLED_Set_Point(i, j, 1);
 		}
 	}
-	refreshArea();
-}
 	
+	refreshRange(X_L, X_R, Y_H, Y_L);	// 更新范围信息
+	if ( ifReflash == 1 )
+		refreshArea();
+}
+
+//刷新区域范围的信息
+static void refreshRange(uint8_t X_L, uint8_t X_R, uint8_t Y_H, uint8_t Y_L)
+{
+	videoMem.refreshXL = videoMem.refreshXL > X_L ? X_L : videoMem.refreshXL;
+	videoMem.refreshXR = videoMem.refreshXR < X_R ? X_R : videoMem.refreshXR;
+	videoMem.refreshYH = videoMem.refreshYH > Y_H ? Y_H : videoMem.refreshYH;
+	videoMem.refreshYL = videoMem.refreshYL < Y_L ? Y_L : videoMem.refreshYL;
+}
+
 //刷新指定区域
 void refreshArea(void)
 {
@@ -290,29 +322,10 @@ void refreshArea(void)
 	page_L = videoMem.refreshYL / 8;
 	page_H = videoMem.refreshYH / 8;
 	
-//	for ( i = page_H; i <= page_L; i++ )
-//	{
-//		OLED_SetPos(videoMem.refreshXL, i);
-//		for ( j = videoMem.refreshXL; j <= videoMem.refreshXR; j++ )
-//		{
-//			dataBack = 0;
-//			data = videoMem.pVideoMem[j][i];	// 将显存数据反序输出
-//			dataBack |= ((data & 0x80) >> 7);
-//			dataBack |= ((data & 0x40) >> 5);
-//			dataBack |= ((data & 0x20) >> 3);
-//			dataBack |= ((data & 0x10) >> 1);
-//			dataBack |= ((data & 0x08) << 1);
-//			dataBack |= ((data & 0x04) << 3);
-//			dataBack |= ((data & 0x02) << 5);
-//			dataBack |= ((data & 0x01) << 7);
-//			WriteDat(dataBack);
-//		}
-//	}
-	
-	for ( i = 0; i <= 7; i++ )
+	for ( i = page_H; i <= page_L; i++ )
 	{
 		OLED_SetPos(videoMem.refreshXL, i);
-		for ( j = 0; j <= 127; j++ )
+		for ( j = videoMem.refreshXL; j <= videoMem.refreshXR; j++ )
 		{
 			dataBack = 0;
 			data = videoMem.pVideoMem[j][i];	// 将显存数据反序输出
@@ -327,8 +340,12 @@ void refreshArea(void)
 			WriteDat(dataBack);
 		}
 	}
+	
+	videoMem.refreshXL = 0;
+	videoMem.refreshXR = 0;
+	videoMem.refreshYH = 0;
+	videoMem.refreshYL = 0;
 }
-
 
 
 

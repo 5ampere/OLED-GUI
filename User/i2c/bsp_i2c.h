@@ -5,6 +5,7 @@
 
 #define EEPROM_I2C_WR	0		/* 写控制bit */
 #define EEPROM_I2C_RD	1		/* 读控制bit */
+#define OLED_ADDRESS 	 0x78 //通过调整0R电阻,屏可以0x78和0x7A两个地址 -- 默认0x78
 
 
 /* 定义I2C总线连接的GPIO端口, 用户只需要修改下面4行代码即可任意改变SCL和SDA的引脚 */
@@ -22,7 +23,8 @@
 
 #define EEPROM_I2C_SDA_READ()  GPIO_ReadInputDataBit(EEPROM_GPIO_PORT_I2C, EEPROM_I2C_SDA_PIN)	/* 读SDA口线状态 */
 
-
+void I2C_Configuration(void);
+void I2C_WriteByte(uint8_t addr,uint8_t data);
 void i2c_Start(void);
 void i2c_Stop(void);
 void i2c_SendByte(uint8_t _ucByte);

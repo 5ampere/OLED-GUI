@@ -87,23 +87,24 @@ static inline void keyPress_UpandDown(uint8_t keyValue)
 					menuManage.optionMenuHead = menuManage.nowMenu->pSonMenu[numberHead];
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[numberTail];
 					// 绘图
-					OLED_Clear(0, 16, 127, 63);
-					OLED_DispChar_UI(0, 16, &Material_Arrow);
+					OLED_Clear(0, 16, 127, 63, 0);
+					OLED_DispChar_UI(0, 16, &Material_Arrow, 0);
 					for ( j = 0; j <= numberTail-numberHead; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, (*menuManage.nowMenu->pSonMenu[numberHead+j]).menuName);
+						OLED_ShowStr(16, j*16+16, (*menuManage.nowMenu->pSonMenu[numberHead+j]).menuName, 0);
 					}
-					antiColor(0, 16, 127, 31);
+					OLED_AntiColor(0, 16, 127, 31, 0);
 				}
 				else	// 光标在中途按下向上则整体不动，光标向上
 				{
 					j = numberChose -  numberHead;
 					j = 16 + j * 16;
-					OLED_Fill(0, j, 15, j+15);
-					OLED_DispChar_UI(0, j-16, &Material_Arrow);
-					antiColor(0, j-16, 127, j+15);
+					OLED_Fill(0, j, 15, j+15, 0);
+					OLED_DispChar_UI(0, j-16, &Material_Arrow, 0);
+					OLED_AntiColor(0, j-16, 127, j+15, 0);
 				}
 			}
+			refreshArea();
 		}break;
 		case 2: 
 		{
@@ -118,23 +119,24 @@ static inline void keyPress_UpandDown(uint8_t keyValue)
 					menuManage.optionMenuHead = menuManage.nowMenu->pSonMenu[numberHead];
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[numberTail];
 					// 绘图
-					OLED_Clear(0, 16, 127, 63);
-					OLED_DispChar_UI(0, 48, &Material_Arrow);
+					OLED_Clear(0, 16, 127, 63, 0);
+					OLED_DispChar_UI(0, 48, &Material_Arrow, 0);
 					for ( j = 0; j <= numberTail-numberHead; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, (*menuManage.nowMenu->pSonMenu[numberHead+j]).menuName);
+						OLED_ShowStr(16, j*16+16, (*menuManage.nowMenu->pSonMenu[numberHead+j]).menuName, 0);
 					}
-					antiColor(0, 48, 127, 63);
+					OLED_AntiColor(0, 48, 127, 63, 0);
 				}
 				else	// 光标在中途按下向下则整体不动，光标向下
 				{
 					j = numberChose -  numberHead;
 					j = 16 + j * 16;
-					OLED_Fill(0, j, 15, j+16);
-					OLED_DispChar_UI(0, j+16, &Material_Arrow);
-					antiColor(0, j, 127, j+31);
+					OLED_Fill(0, j, 15, j+16, 0);
+					OLED_DispChar_UI(0, j+16, &Material_Arrow, 0);
+					OLED_AntiColor(0, j, 127, j+31, 0);
 				}
 			}
+			refreshArea();
 		}break;
 	}
 }
@@ -161,26 +163,27 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 				if ( menuManage.nowMenu->numSonMenu < 3 )
 				{
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[menuManage.nowMenu->numSonMenu-1];
-					OLED_Clear(0, 0, 127, 63);
-					OLED_DispChar_UI(0, 16, &Material_Arrow);
+					OLED_Clear(0, 0, 127, 63, 0);
+					OLED_DispChar_UI(0, 16, &Material_Arrow, 0);
 					for ( j = 0; j < menuManage.nowMenu->numSonMenu ; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName);
+						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName, 0);
 					}
 				}
 				else					
 				{
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[2];
-					OLED_Clear(0, 0, 127, 63);
-					OLED_DispChar_UI(0, 16, &Material_Arrow);
+					OLED_Clear(0, 0, 127, 63, 0);
+					OLED_DispChar_UI(0, 16, &Material_Arrow, 0);
 					for ( j = 0; j < 3 ; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName);
+						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName, 0);
 					}				
 				}
-				OLED_ShowStr((128-(8*strlen(menuManage.nowMenu->menuName)))/2, 0, menuManage.nowMenu->menuName);
-				antiColor(0, 0, 127, 31);
+				OLED_ShowStr((128-(8*strlen(menuManage.nowMenu->menuName)))/2, 0, menuManage.nowMenu->menuName, 0);
+				OLED_AntiColor(0, 0, 127, 31, 0);
 			}
+			refreshArea();
 		}break;
 		case 4 : 
 		{
@@ -188,14 +191,14 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 			{
 				menuManage.nowMenu = menuManage.nowMenu->pFatherMenu;	//当前菜单指针更新
 				menuManage.choiceMenu = menuManage.nowMenu->pSonMenu[0];	//当前选择的菜单更新
-				OLED_Clear(0, 0, 127, 63);
-				OLED_DispChar_UI(0, 16, &Material_Arrow);
+				OLED_Clear(0, 0, 127, 63, 0);
+				OLED_DispChar_UI(0, 16, &Material_Arrow, 0);
 				if ( menuManage.nowMenu->numSonMenu < 3 )
 				{
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[menuManage.nowMenu->numSonMenu];			
 					for ( j = 0; j < menuManage.nowMenu->numSonMenu ; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName);
+						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName, 0);
 					}
 				}
 				else					
@@ -203,11 +206,11 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[2];
 					for ( j = 0; j < 3 ; j++ )
 					{
-						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName);
+						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName, 0);
 					}
 				}
-				OLED_ShowStr((128-(8*strlen(menuManage.nowMenu->menuName)))/2, 0, menuManage.nowMenu->menuName);
-				antiColor(0, 0, 127, 31);
+				OLED_ShowStr((128-(8*strlen(menuManage.nowMenu->menuName)))/2, 0, menuManage.nowMenu->menuName, 0);
+				OLED_AntiColor(0, 0, 127, 31, 0);
 			}
 			else	// 在根菜单按下了返回，将指针恢复初始并返回1，退出菜单界面的循环
 			{
@@ -215,6 +218,7 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 				menuManage.nowMenu = &yourMenu[0];
 				return 1;
 			}
+			refreshArea();
 		}break;
 	}
 	return 0;
@@ -227,7 +231,7 @@ void enterMainMenu(void)
 	
 	while ( 1 )
 	{
-		OLED_DispChar_UI( 0, 0, &Cover_Arrow);	// 画主界面
+		OLED_DispChar_UI( 0, 0, &Cover_Arrow, 1);	// 画主界面
 		
 		do 
 		{

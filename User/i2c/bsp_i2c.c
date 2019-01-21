@@ -219,3 +219,27 @@ uint8_t i2c_CheckDevice(uint8_t _Address)
 
 	return ucAck;
 }
+
+//I2C总线初始化
+void I2C_Configuration(void)
+{
+    i2c_CfgGpio();
+}
+
+//I2C写一个字节
+void I2C_WriteByte(uint8_t addr,uint8_t data)
+{
+    i2c_Start();
+
+    i2c_SendByte(OLED_ADDRESS | EEPROM_I2C_WR);
+    i2c_WaitAck();
+
+    i2c_SendByte(addr);
+    i2c_WaitAck();
+
+    i2c_SendByte(data);
+    i2c_WaitAck();
+
+    i2c_Stop();
+}
+
