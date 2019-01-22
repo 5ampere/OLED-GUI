@@ -6,19 +6,16 @@
 
 // 菜单数组
 // 数据结构 : 当前目录名称 当前目录ID 父目录ID 子菜单个数 父目录指针 子目录指针数组指针 函数指针
-#define sizeOfMenu		9 
+#define sizeOfMenu		6 
 Menu yourMenu[sizeOfMenu] = 
 {	
 /************************ 用户自定义菜单数组 ************************/
-	{ (uint8_t*)"123456", 1, 0, 8, null, null, null },	// 这是根菜单
+	{ (uint8_t*)"ROOT", 1, 0, 2, null, null, null },	// 这是根菜单,不能删除，可以更改名称、子菜单数量
 	{ (uint8_t*)"Menu_1", 2, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_2", 3, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_3", 4, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_4", 5, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_5", 6, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_6", 7, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_5", 8, 1, 0, null, null, null },
-	{ (uint8_t*)"Menu_6", 9, 1, 0, null, null, null },
+	{ (uint8_t*)"Menu_2", 3, 1, 3, null, null, null },
+	{ (uint8_t*)"Menu_3", 4, 3, 0, null, null, null },
+	{ (uint8_t*)"Menu_4", 5, 3, 0, null, null, null },
+	{ (uint8_t*)"Menu_5", 6, 3, 0, null, null, null },
 /************************ 用户自定义菜单数组 ************************/
 };
 
@@ -191,11 +188,12 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 			{
 				menuManage.nowMenu = menuManage.nowMenu->pFatherMenu;	//当前菜单指针更新
 				menuManage.choiceMenu = menuManage.nowMenu->pSonMenu[0];	//当前选择的菜单更新
+				menuManage.optionMenuHead = menuManage.choiceMenu;	// 头指针更新
 				OLED_Clear(0, 0, 127, 63, 0);
 				OLED_DispChar_UI(0, 16, &Material_Arrow, 0);
 				if ( menuManage.nowMenu->numSonMenu < 3 )
 				{
-					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[menuManage.nowMenu->numSonMenu];			
+					menuManage.optionMenuTail = menuManage.nowMenu->pSonMenu[menuManage.nowMenu->numSonMenu - 1];			
 					for ( j = 0; j < menuManage.nowMenu->numSonMenu ; j++ )
 					{
 						OLED_ShowStr(16, j*16+16, menuManage.nowMenu->pSonMenu[j]->menuName, 0);

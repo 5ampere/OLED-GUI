@@ -11,24 +11,24 @@ videoMemory videoMem = {	//显存结构体
 };
 
 //写命令
-void WriteCmd(unsigned char I2C_Command)
+void WriteCmd(unsigned char Command)
 {
 	
 /*************************用户自行实现函数体*************************/
 	
-    I2C_WriteByte(0x00, I2C_Command);
+    I2C_WriteByte(0x00, Command);
 	
 /*************************用户自行实现函数体*************************/
 	
 }
 
 //写数据
-void WriteDat(unsigned char I2C_Data)
+void WriteDat(unsigned char Data)
 {
 	
 /*************************用户自行实现函数体*************************/
 	
-    I2C_WriteByte(0x40, I2C_Data);
+    I2C_WriteByte(0x40, Data);
 	
 /*************************用户自行实现函数体*************************/
 	

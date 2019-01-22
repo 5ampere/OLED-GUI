@@ -37,8 +37,8 @@ typedef struct _videoMemory
 	uint8_t refreshYL;			//需要刷新的矩形区域y轴下端坐标
 }videoMemory;
 
-void WriteCmd(unsigned char I2C_Command);
-void WriteDat(unsigned char I2C_Data);
+void WriteCmd(unsigned char Command);
+void WriteDat(unsigned char Data);
 void OLED_Init(void);
 void OLED_SetPos(unsigned char x, unsigned char y);
 void OLED_ON(void);
