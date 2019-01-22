@@ -2,9 +2,9 @@
 #define	__OLED_DRIVE_H
 
 #include "stm32f10x.h"
-#include "./font/fonts.h"
+#include "./oled/fonts.h"
 
-#define OLED_ADDRESS 	 0x78 //通过调整0R电阻,屏可以0x78和0x7A两个地址 -- 默认0x78
+
 #define I2C_DELAY    	 254
 
 #define OLED_WIDTH		 128
@@ -37,22 +37,20 @@ typedef struct _videoMemory
 	uint8_t refreshYL;			//需要刷新的矩形区域y轴下端坐标
 }videoMemory;
 
-
-void I2C_Configuration(void);
-void I2C_WriteByte(uint8_t addr,uint8_t data);
-void WriteCmd(unsigned char I2C_Command);
-void WriteDat(unsigned char I2C_Data);
+void WriteCmd(unsigned char Command);
+void WriteDat(unsigned char Data);
 void OLED_Init(void);
 void OLED_SetPos(unsigned char x, unsigned char y);
-void OLED_Fill(unsigned char fill_Data);//全屏点亮(0XFF)   全屏灭(0x00)
-void OLED_CLS(void);//清屏
-void OLED_ON(void);//测试OLED休眠后唤醒
-void OLED_OFF(void);//测试OLED休眠
+void OLED_ON(void);
+void OLED_OFF(void);
+static void refreshRange(uint8_t X_L, uint8_t X_R, uint8_t Y_H, uint8_t Y_L);
 void refreshArea(void);
-void antiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2);
-void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2);
 void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar );
-void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStr);
-void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial );
+
+void OLED_AntiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);
+void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);
+void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);
+void OLED_ShowStr(unsigned char x, unsigned char y, unsigned char * pStrn, uint8_t ifReflash);
+void OLED_DispChar_UI( uint16_t usX, uint16_t usY, yourMaterial *pMaterial, uint8_t ifReflash);
 
 #endif /* __OLED_DRIVE_H */
