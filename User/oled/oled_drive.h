@@ -46,6 +46,7 @@ void OLED_OFF(void);
 static void refreshRange(uint8_t X_L, uint8_t X_R, uint8_t Y_H, uint8_t Y_L);
 void refreshArea(void);
 void OLED_DispChar_EN( uint16_t usX, uint16_t usY, const char cChar );
+
 void OLED_AntiColor(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);
 void OLED_Clear(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);
 void OLED_Fill(uint8_t X1, uint8_t Y1, uint8_t X2, uint8_t Y2, uint8_t ifReflash);

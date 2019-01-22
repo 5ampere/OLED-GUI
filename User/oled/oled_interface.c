@@ -14,7 +14,7 @@ Menu yourMenu[sizeOfMenu] =
 	{ (uint8_t*)"Menu_1", 2, 1, 0, null, null, null },
 	{ (uint8_t*)"Menu_2", 3, 1, 3, null, null, null },
 	{ (uint8_t*)"Menu_3", 4, 3, 0, null, null, null },
-	{ (uint8_t*)"Menu_4", 5, 3, 0, null, null, null },
+	{ (uint8_t*)"Menu_4", 5, 3, 0, null, null, myFunction },
 	{ (uint8_t*)"Menu_5", 6, 3, 0, null, null, null },
 /************************ 用户自定义菜单数组 ************************/
 };
@@ -26,6 +26,11 @@ Manage menuManage = {
 	&yourMenu[0],
 	&yourMenu[0],
 }; 
+
+void myFunction(void)
+{
+	OLED_ShowStr(20,20,"Test OK!",1);
+}
 
 // 菜单数结构的初始化
 void menuInit(void)
@@ -146,7 +151,7 @@ static inline uint8_t keyPress_YesandNo(uint8_t keyValue)
 	{
 		case 3 : 
 		{		
-			if ( menuManage.nowMenu->pSonMenu == null )	// 没有子菜单则调用函数
+			if ( menuManage.choiceMenu->pSonMenu == null )	// 选择的菜单没有子菜单则调用函数
 			{
 				if ( menuManage.choiceMenu->pFunction != null )
 					(*menuManage.choiceMenu->pFunction)();

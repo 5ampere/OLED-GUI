@@ -31,4 +31,10 @@ extern Menu yourMenu[];
 void menuInit(void);
 void enterMainMenu(void);
 
+/***********************用户自定义函数的声明***********************/
+
+void myFunction(void);
+
+/***********************用户自定义函数的声明***********************/
+
 #endif /* __OLED_INTERFACE_H */
