@@ -1,6 +1,5 @@
 #include "./oled/OLED_drive.h"
-#include "./i2c/bsp_i2c.h"
-#include "./font/fonts.h"
+#include "./oled/fonts.h"
 
 videoMemory videoMem = {	//显存结构体
 	0,
@@ -16,7 +15,7 @@ void WriteCmd(unsigned char Command)
 	
 /*************************用户自行实现函数体*************************/
 	
-    I2C_WriteByte(0x00, Command);
+//    I2C_WriteByte(0x00, Command);
 	
 /*************************用户自行实现函数体*************************/
 	
@@ -28,7 +27,7 @@ void WriteDat(unsigned char Data)
 	
 /*************************用户自行实现函数体*************************/
 	
-    I2C_WriteByte(0x40, Data);
+//    I2C_WriteByte(0x40, Data);
 	
 /*************************用户自行实现函数体*************************/
 	
@@ -40,9 +39,9 @@ static inline void Delay_1MS(void)
 
 /*************************用户自行实现函数体*************************/
 	
-	unsigned char a,b;
-	for(b=109; b>0; b--)
-            for(a=26; a>0; a--);
+//	unsigned char a,b;
+//	for(b=109; b>0; b--)
+//            for(a=26; a>0; a--);
 	
 /*************************用户自行实现函数体*************************/
 	
