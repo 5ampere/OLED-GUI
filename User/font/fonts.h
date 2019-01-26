@@ -2,7 +2,7 @@
 #define __FONT_H       
 
 #include "stm32f10x.h"
-#include "./oled/fonts.h"
+#include "./font/fonts.h"
 
 // 英文字模结构体
 typedef struct _tFont

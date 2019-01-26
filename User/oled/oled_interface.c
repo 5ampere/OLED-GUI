@@ -4,12 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/***********************用户自定义函数的声明***********************/
-
-
-
-/***********************用户自定义函数的声明***********************/
-
 // 菜单数组
 // 数据结构 : 当前目录名称 当前目录ID 父目录ID 子菜单个数 父目录指针 子目录指针数组指针 函数指针
 #define sizeOfMenu		6 
@@ -17,11 +11,11 @@ Menu yourMenu[sizeOfMenu] =
 {	
 /************************ 用户自定义菜单数组 ************************/
 	{ (uint8_t*)"ROOT", 1, 0, 2, null, null, null },	// 这是根菜单,不能删除，可以更改名称、子菜单数量
-//	{ (uint8_t*)"Menu_1", 2, 1, 0, null, null, null },
-//	{ (uint8_t*)"Menu_2", 3, 1, 3, null, null, null },
-//	{ (uint8_t*)"Menu_3", 4, 3, 0, null, null, null },
-//	{ (uint8_t*)"Menu_4", 5, 3, 0, null, null, null },
-//	{ (uint8_t*)"Menu_5", 6, 3, 0, null, null, null },
+	{ (uint8_t*)"Menu_1", 2, 1, 0, null, null, null },
+	{ (uint8_t*)"Menu_2", 3, 1, 3, null, null, null },
+	{ (uint8_t*)"Menu_3", 4, 3, 0, null, null, null },
+	{ (uint8_t*)"Menu_4", 5, 3, 0, null, null, myFunction },
+	{ (uint8_t*)"Menu_5", 6, 3, 0, null, null, null },
 /************************ 用户自定义菜单数组 ************************/
 };
 
@@ -32,6 +26,11 @@ Manage menuManage = {
 	&yourMenu[0],
 	&yourMenu[0],
 }; 
+
+void myFunction(void)
+{
+	OLED_ShowStr(20,20,"Test OK!",1);
+}
 
 // 菜单数结构的初始化
 void menuInit(void)
